@@ -1,0 +1,14 @@
+----------------------------------------------
+|            / UNAME1 / UNAME2 /             |
+|--------------------------------------------|
+|> 0000 <|2342 seanmakesgames : this is a mes|
+|- 0001 -|sage       			     |
+|- 0002 -|2345 ratiasu : looking good!       |
+|- 0003 -|2349 ratiasu : even messages that s|
+|- 0004 -|pan multiple lines should be wrappe|
+|        |d up into this window in case of sm|
+|        |all ttys			     |
+|        |-----------------------------------|
+|        |>                                  |
+----------------------------------------------
+
