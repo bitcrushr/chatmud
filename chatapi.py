@@ -5,14 +5,13 @@ class API:
     def __init__(self, token):
         self.baud_active = 1
         self.baud_inactive = 5
-
         self.token = token
         self.usernames = {}
         self.username = ''
         self.channels = []
         self.last_poll = 0
         self.ready = False
-        self.handled_messages = {}
+        self.chatbuffer = []
 
 
     def send_request(self, method, params):
@@ -21,35 +20,36 @@ class API:
                 json = params)
 
     def login(self):
-        if token.len > 6:
+        if len(self.token) > 6:
             return self.get_usernames()
         else:
-            res = self.send_request('get_token', json.dumps( { 'pass' : this.token } ) ).json()
+            res = self.send_request('get_token', { 'pass' : self.token } ).json()
             self.token = res['chat_token']
             return self.get_usernames()
 
     def get_usernames(self):
-        res = self.send_request('account_data', json.dumps( { 'chat_token' : this.token } ) ).json()
+        res = self.send_request('account_data', { 'chat_token' : self.token }  ).json()
         self.usernames = res['users']
         self.ready = True
         return res['users'].keys()
 
     def set_username(self, username):
-        channels = this.usernames[username]
-        if channels.len:
+        channels = self.usernames[username]
+        if len(channels):
             self.handled_messages = {}
             self.last_poll = 0
-            self,username = username
+            self.username = username
             self.channels = channels
             return self.channels
 
     def poll_messages(self):
-        if self.username.len && self.ready:
-            
-        return
+        if len(self.username) and self.ready:
+            res = self.send_request('chats', { 'chat_token' : self.token , 'usernames' : [self.username] } ).json()
+            self.chatbuffer = res['chats'][self.username]
+            return self.chatbuffer
 
-    def send_chat_to_user(self):
-        return
+    def send_chat_to_user(self, username, msg):
+        return self.send_request('create_chat',  { 'chat_token' : self.token, 'username' : self.username, 'tell' : username, 'msg' : msg} ).json()
 
-    def send_chat_to_channel(self):
-        return
+    def send_chat_to_channel(self, channel, msg):
+        return self.send_request('create_chat',  { 'chat_token' : self.token, 'username' : self.username, 'channel' : channel, 'msg' : msg} ).json()
