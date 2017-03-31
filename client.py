@@ -1,26 +1,74 @@
 import chatapi
+import graphics
 import os
 import sys
-import re
+from pathlib import Path
+import time
+import threading
 
-def scrape(message):
-	message = re.sub(r"(`[A-Za-z])", "", message)
-	message = message.replace("`", "")
-	return message
+Api = None
+saved = False
 
-def main():
-	os.system("clear")
-	print("Enter your token pls:")
-	print("6s28ukxCergAanzjTgXw")
-	resp = "6s28ukxCergAanzjTgXw"
+token_file = Path("./token.dat")
+
+os.system("clear")
+
+if token_file.is_file():
+	saved = True
+	token_file = open('token.dat')
+	resp = token_file.read()
 	Api = chatapi.API(resp)
-	if Api.login():
-		print("Logged in with {}".format(Api.token))
-	Api.set_username("ratiasu")
-	Api.send_chat_to_channel("0234", "nuutest")
-	messages = Api.poll_messages()
-	for i in messages:
-		print("{} // {}".format(i['t'],i['from_user']))
-		print(scrape(i['msg']))
+	Api.login()
+else:
+	resp = input("Enter your chat_pass: ")
+	Api = chatapi.API(resp)
+	Api.login()
+	if Api.token:
+		token_file  = open('token.dat', 'w+')
+		token_file.write(Api.token)
+	else:
+		print("Invalid token...")
+		sys.exit(1)
 
-main()
+
+print("Logged in with {}".format(Api.token))
+	
+resp_u = input('Starting user: ')
+resp_c = input('Starting channel: ')
+
+Api.set_username(resp_u)
+username = resp_u
+
+channel = resp_c
+
+messages = Api.poll_messages()
+	
+
+Gui = graphics.Graphics()
+	
+
+### repeater function needs to be defined here in order to have variable access (I think?)
+class Threader( threading.Thread ):
+	def run(self):
+		while running:
+			messages = Api.poll_messages()
+			Gui.render(messages, channel, username)
+			time.sleep(2)
+
+###
+running = True
+Threader().start()
+###
+
+while running:
+	uin = Gui.wait_input()
+	if uin == "/quit":
+		running = False
+	elif "/user " in uin:
+		Api.set_username(uin[6:])
+		username = uin[6:]
+	elif "/channel " in uin:
+		channel = uin[9:]
+	else:
+		Api.send_chat_to_channel(channel, uin)
+

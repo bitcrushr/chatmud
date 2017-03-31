@@ -36,8 +36,6 @@ class API:
     def set_username(self, username):
         channels = self.usernames[username]
         if len(channels):
-            self.handled_messages = {}
-            self.last_poll = 0
             self.username = username
             self.channels = channels
             return self.channels
@@ -45,8 +43,11 @@ class API:
     def poll_messages(self):
         if len(self.username) and self.ready:
             res = self.send_request('chats', { 'chat_token' : self.token , 'usernames' : [self.username] } ).json()
-            self.chatbuffer = res['chats'][self.username]
-            return self.chatbuffer
+            try:
+                self.chatbuffer = res['chats'][self.username]
+            except:
+                pass
+            return reversed( self.chatbuffer )
 
     def send_chat_to_user(self, username, msg):
         return self.send_request('create_chat',  { 'chat_token' : self.token, 'username' : self.username, 'tell' : username, 'msg' : msg} ).json()
