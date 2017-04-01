@@ -1,19 +1,20 @@
-#from curses import wrapper
+from curses import wrapper
+import cgraphics
 import chatapi
-import graphics
 import os
 import sys
 from pathlib import Path
 import time
 import threading
-def main():
+
+def main(stdscr):
+	stdscr.clear()
 	Api = None
 	saved = False
 	
-	token_file = Path("./token.dat")
 	
-	os.system("clear")
-
+	Gui = cgraphics.Graphics(stdscr)
+	token_file = Path("./token.dat")
 	if token_file.is_file():
 		saved = True
 		token_file = open('token.dat')
@@ -21,39 +22,44 @@ def main():
 		Api = chatapi.API(resp)
 		Api.login()
 	else:
-		resp = input("Enter your chat_pass: ")
+		resp = Gui.wait_input("Enter your chat_pass: ")
 		Api = chatapi.API(resp)
 		Api.login()
 		if Api.token:
 			token_file  = open('token.dat', 'w+')
 			token_file.write(Api.token)
 		else:
-			print("Invalid token...")
+	#		print("Invalid token...")
 			sys.exit(1)
 	
 	
-	print("Logged in with {}".format(Api.token))
+	#Gui.inject_chat("Logged in with {}".format(Api.token))
 	
-	resp_u = input('Starting user: ')
-	resp_c = input('Starting channel: ')
+	resp_u = Gui.wait_input('Starting user: ')
+	resp_c = Gui.wait_input('Starting channel: ')
 	
 	Api.set_username(resp_u)
 	username = resp_u
 	
 	channel = resp_c
 	
+	Gui.switch_channel_user(channel, username)
+	Gui.resize()
 	messages = Api.poll_messages()
 	
 	
-	Gui = graphics.Graphics()
 	
 
 	### repeater function needs to be defined here in order to have variable access (I think?)
 	class Threader( threading.Thread ):
 		def run(self):
+			messages = Api.poll_messages()
+			Gui.put_buffer(messages)
+			Gui.render_chatbox()
 			while running:
-				messages = Api.poll_messages()
-				Gui.render(messages, channel, username)
+				messages = Api.poll_history()
+				Gui.put_buffer(messages)
+				Gui.render_chatbox()
 				time.sleep(2)
 
 	###
@@ -65,12 +71,21 @@ def main():
 		uin = Gui.wait_input()
 		if uin == "/quit":
 			running = False
+			sys.exit(1)
 		elif "/user " in uin:
 			Api.set_username(uin[6:])
 			username = uin[6:]
+			Gui.switch_channel_user(channel, username)
 		elif "/channel " in uin:
 			channel = uin[9:]
+			Gui.switch_channel_user(channel, username)
 		else:
 			Api.send_chat_to_channel(channel, uin)
 
-main()
+wrapper(main)
+"""
+try:
+	wrapper(main)
+except:
+	print("Program exited unexpectedly.")
+"""
