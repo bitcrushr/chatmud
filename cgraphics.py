@@ -29,7 +29,6 @@ class Graphics():
 	def inject_chat(self, msg):
 		
 		self.linebuffer.append(msg)
-		self.regindex += 1
 		self.render_chatbox()
 	
 	def resize(self):
@@ -47,7 +46,6 @@ class Graphics():
 		h, w = self.stdscr.getmaxyx()
 		self.stdscr.clear()
 		self.stdscr.refresh()
-
 		self.render_chatbox()
 		self.render_inputbox()
 
@@ -58,7 +56,13 @@ class Graphics():
 					self.linebuffer.append( "{} // {} :".format(i['t'], i['from_user']) )
 					thinglist = i['msg'].splitlines()
 					for i in thinglist:
-						self.linebuffer.append( scrape( i ) )
+						if i:
+							self.linebuffer.append( scrape( i ) )
+						if len(i) > curses.COLS:
+							iterator = int(len(i) / curses.COLS)
+							while iterator > 0:
+								self.linebuffer.append( "" )
+								iterator -= 1
 					self.linebuffer.append( "" )
 		
 		self.render_chatbox()
@@ -83,7 +87,6 @@ class Graphics():
 				self.inject_chat("There was a problem displaying this message :c")
 			j += 1
 			self.win_chatbox.refresh()
-		self.stdscr.hline(h,0, '-', w)
 		self.stdscr.refresh()
 	
 	def render_inputbox(self):
@@ -107,6 +110,7 @@ class Graphics():
 
 	def wait_input(self, prompt=""):
 		self.inputbuffer = prompt
+		self.stdscr.refresh()
 		self.render_inputbox()
 		self.win_inputbox.cursyncup()
 		last = -1
