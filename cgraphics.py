@@ -19,7 +19,7 @@ class Graphics():
 
 		self.chatbox_hwyx = (curses.LINES - 3, curses.COLS, 0, 0)
 		pos = curses.LINES-1
-		self.inputbox_hwyx = (3, curses.COLS, 29, 0)
+		self.inputbox_hwyx = (3, curses.COLS, curses.LINES - 3, 0)
 		
 		self.win_chatbox = stdscr.derwin(*self.chatbox_hwyx)
 		self.win_inputbox = stdscr.derwin(*self.inputbox_hwyx)
