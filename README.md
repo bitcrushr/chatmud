@@ -10,7 +10,7 @@ How to use:
 ```
 
 THIS PROJECT REQUIRES THE 'requests' AND 'pathlib'  LIBRARIES
-To install this library, run:
+\nTo install this library, run:
 ```
   pip install requests
 ```
