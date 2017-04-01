@@ -29,11 +29,11 @@ def main(stdscr):
 			token_file  = open('token.dat', 'w+')
 			token_file.write(Api.token)
 		else:
-	#		print("Invalid token...")
+			Gui.inject_chat("Invalid token...")
 			sys.exit(1)
 	
 	
-	#Gui.inject_chat("Logged in with {}".format(Api.token))
+	Gui.inject_chat("Logged in with {}".format(Api.token))
 	
 	resp_u = Gui.wait_input('Starting user: ')
 	resp_c = Gui.wait_input('Starting channel: ')
@@ -53,14 +53,12 @@ def main(stdscr):
 	### repeater function needs to be defined here in order to have variable access (I think?)
 	class Threader( threading.Thread ):
 		def run(self):
-			messages = Api.poll_messages()
-			Gui.put_buffer(messages)
-			Gui.render_chatbox()
 			while running:
-				messages = Api.poll_history()
+				messages = Api.poll_messages()
+				print(messages)
 				Gui.put_buffer(messages)
 				Gui.render_chatbox()
-				time.sleep(2)
+				time.sleep(3)
 
 	###
 	running = True
@@ -71,7 +69,7 @@ def main(stdscr):
 		uin = Gui.wait_input()
 		if uin == "/quit":
 			running = False
-			sys.exit(1)
+			sys.exit()
 		elif "/user " in uin:
 			Api.set_username(uin[6:])
 			username = uin[6:]
@@ -81,7 +79,8 @@ def main(stdscr):
 			Gui.switch_channel_user(channel, username)
 		else:
 			Api.send_chat_to_channel(channel, uin)
-
+	
+	sys.exit()
 wrapper(main)
 """
 try:
