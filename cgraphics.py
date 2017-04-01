@@ -89,7 +89,11 @@ class Graphics():
 	def render_inputbox(self):
 		h, w = self.win_inputbox.getmaxyx()
 		self.win_inputbox.clear()
-		self.win_inputbox.addstr(1, 0, "{} @ {} : {}".format(self.user, self.channel, self.inputbuffer))
+		string = "{} @ {} : {}".format(self.user, self.channel, self.inputbuffer)
+		if len(string) > w - 5:
+			start = len(string) - w + 5
+			string = string[start:]
+		self.win_inputbox.addstr(1, 0, string)
 		self.win_inputbox.refresh()
 		
 
