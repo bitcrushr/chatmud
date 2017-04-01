@@ -53,13 +53,13 @@ class Graphics():
 
 	def put_buffer(self, buff):
 		for i in buff:
-			#try:
 			if i['channel'] == self.channel:
 				self.linebuffer.append( "{} // {} :".format(i['t'], i['from_user']) )
-				self.linebuffer.append( scrape( i['msg'] ) )
+				thinglist = i['msg'].splitlines()
+				for i in thinglist:
+					self.linebuffer.append( scrape( i ) )
 				self.linebuffer.append( "" )
-			#except:
-			#	pass
+		
 		self.render_chatbox()
 
 	def switch_channel_user(self, channel, user):
@@ -76,7 +76,10 @@ class Graphics():
 		if j < 0:
 			j = 0
 		for i in range(min(h, len(self.linebuffer))):
-			self.win_chatbox.addstr(i, 0, self.linebuffer[j])
+			try:
+				self.win_chatbox.addstr(i, 0, self.linebuffer[j])
+			except:
+				self.inject_chat("There was a problem displaying this message :c")
 			j += 1
 			self.win_chatbox.refresh()
 		self.stdscr.hline(h,0, '-', w)
