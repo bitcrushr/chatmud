@@ -9,8 +9,8 @@ How to use:
   {coming soon} /help -> display this
 ```
 
-THIS PROJECT REQUIRES THE 'requests' AND 'pathlib'  LIBRARIES
-\nTo install this library, run:
+THIS PROJECT REQUIRES THE 'requests' AND 'pathlib'  LIBRARIES.
+To install these libraries, run:
 ```
   pip install requests
 ```
