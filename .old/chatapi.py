@@ -3,6 +3,8 @@ import json
 
 class API:
     def __init__(self, token):
+        self.baud_active = 1
+        self.baud_inactive = 5
         self.token = token
         self.usernames = {}
         self.username = ''
@@ -42,24 +44,11 @@ class API:
         if len(self.username) and self.ready:
             res = self.send_request('chats', { 'chat_token' : self.token , 'usernames' : [self.username] } ).json()
             try:
-                #this.last_poll = res['chats'][1]['t']
                 self.chatbuffer = res['chats'][self.username]
             except:
-                print("There was a problem {}".format(res))
-            resp = reversed( self.chatbuffer )
-            return resp
+                pass
+            return reversed( self.chatbuffer )
 
-    def poll_history(self):
-        if len(self.username) and self.ready:
-            res = self.send_request('chats', { 'chat_token' : self.token , 'usernames' : [self.username], 'after' : self.last_poll} ).json()
-            try:
-                #this.last_poll = res['chats'][1]['t']
-                self.chatbuffer = res['chats'][self.username]
-            except:
-                print("there was an issue")
-            resp = reversed( self.chatbuffer )
-            return resp
-            
     def send_chat_to_user(self, username, msg):
         return self.send_request('create_chat',  { 'chat_token' : self.token, 'username' : self.username, 'tell' : username, 'msg' : msg} ).json()
 
