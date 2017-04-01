@@ -21,19 +21,32 @@ def main(stdscr):
 		token_file = open('token.dat')
 		resp = token_file.read()
 		Api = chatapi.API(resp)
-		Api.login()
+		try:
+			Api.login()
+		except:
+			Gui.kill()
+			sys.exit()
 	else:
 		resp = Gui.wait_input("Enter your chat_pass: ")
 		Api = chatapi.API(resp)
-		Api.login()
+		try:
+			Api.login()
+		except:
+			Gui.kill()
+			print("Connection timed out.")
+			sys.exit()
 		if Api.token:
 			token_file  = open('token.dat', 'w+')
 			token_file.write(Api.token)
 		else:
 			Gui.inject_chat("Invalid token...")
 			sys.exit(1)
-	
-	fullinfo = Api.get_fullinfo()
+	try:
+		fullinfo = Api.get_fullinfo()
+	except:
+		Gui.kill()
+		print("Connection timed out.")
+		sys.exit()
 	usernames = fullinfo.keys()
 
 	Gui.inject_chat("Logged in with {}".format(Api.token))
