@@ -50,27 +50,27 @@ class Graphics():
 		self.render_inputbox()
 
 	def put_buffer(self, buff):
-		for i in buff:
-			if 'channel' in i:
-				if i['channel'] == self.channel:
-					self.linebuffer.append( "{} // {} :".format(i['t'], i['from_user']) )
-					thinglist = i['msg'].splitlines()
-					for i in thinglist:
-						if i:
-							self.linebuffer.append( scrape( i ) )
-						if len(i) > curses.COLS:
-							iterator = int(len(i) / curses.COLS)
-							while iterator > 0:
-								self.linebuffer.append( "" )
-								iterator -= 1
-					self.linebuffer.append( "" )
+		if buff != {}:
+			for i in buff:
+				if 'channel' in i:
+					if i['channel'] == self.channel:
+						self.linebuffer.append( "{} // {} :".format(i['t'], i['from_user']) )
+						thinglist = i['msg'].splitlines()
+						for i in thinglist:
+							if i:
+								self.linebuffer.append( scrape( i ) )
+							if len(i) > curses.COLS:
+								iterator = int(len(i) / curses.COLS)
+								while iterator > 0:
+									self.linebuffer.append( "" )
+									iterator -= 1
+						self.linebuffer.append( "" )
 		
 		self.render_chatbox()
 
 	def switch_channel_user(self, channel, user):
 		self.user = user
 		self.channel = channel
-		self.linebuffer = []
 		self.regindex = 0
 		self.render()
 	
@@ -84,7 +84,7 @@ class Graphics():
 			try:
 				self.win_chatbox.addstr(i, 0, self.linebuffer[j])
 			except:
-				self.inject_chat("There was a problem displaying this message :c")
+				self.inject_chat("")
 			j += 1
 			self.win_chatbox.refresh()
 		self.stdscr.refresh()
