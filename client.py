@@ -11,7 +11,7 @@ def main(stdscr):
 	stdscr.clear()
 	Api = None
 	saved = False
-	
+	baud = 3
 	
 	Gui = cgraphics.Graphics(stdscr)
 	token_file = Path("./token.dat")
@@ -58,7 +58,8 @@ def main(stdscr):
 				print(messages)
 				Gui.put_buffer(messages)
 				Gui.render_chatbox()
-				time.sleep(3)
+				time.sleep(baud)
+			os._exit(1)
 
 	###
 	
@@ -73,14 +74,21 @@ def main(stdscr):
 		uin = Gui.wait_input()
 		if uin == "/quit":
 			running = False
-			sys.exit()
 		elif "/user " in uin:
 			Api.set_username(uin[6:])
 			username = uin[6:]
 			Gui.switch_channel_user(channel, username)
+			Gui.inject_chat("User set to {}".format(username))
 		elif "/channel " in uin:
 			channel = uin[9:]
 			Gui.switch_channel_user(channel, username)
+			Gui.inject_chat("Channel set to {}".format(channel))
+		elif "/baud " in uin:
+			try:
+				baud = int(uin[6:])
+			except:
+				Gui.inject_chat("Bad polling rate : {}".format(uin))
+			Gui.inject_chat("polling rate set to {}".format(baud))
 		else:
 			message_thread = threading.Thread(target=zend, args=[channel, uin])
 			message_thread.start()
