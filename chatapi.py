@@ -64,4 +64,4 @@ class API:
         return self.send_request('create_chat',  { 'chat_token' : self.token, 'username' : self.username, 'tell' : username, 'msg' : msg} ).json()
 
     def send_chat_to_channel(self, channel, msg):
-        return self.send_request('create_chat',  { 'chat_token' : self.token, 'username' : self.username, 'channel' : channel, 'msg' : msg} ).json()
+        self.send_request('create_chat',  { 'chat_token' : self.token, 'username' : self.username, 'channel' : channel, 'msg' : msg} ).json()

@@ -61,6 +61,10 @@ def main(stdscr):
 				time.sleep(3)
 
 	###
+	
+	def zend(channel, msg):
+		Api.send_chat_to_channel(channel, msg)
+	
 	running = True
 	Threader().start()
 	###
@@ -78,8 +82,9 @@ def main(stdscr):
 			channel = uin[9:]
 			Gui.switch_channel_user(channel, username)
 		else:
-			Api.send_chat_to_channel(channel, uin)
-	
+			message_thread = threading.Thread(target=zend, args=[channel, uin])
+			message_thread.start()
+			pass
 	sys.exit()
 wrapper(main)
 """
