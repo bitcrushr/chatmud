@@ -33,12 +33,17 @@ class Graphics():
 	
 	def resize(self):
 		h, w = self.stdscr.getmaxyx()
-		
-		self.win_chatbox.mvwin(0,0)
-		self.win_chatbox.resize(h-3, w)
-		
-		self.win_inputbox.mvwin(h-3, 0)
-		self.win_inputbox.resize(3, w)
+		try:
+			self.win_chatbox.mvwin(0,0)
+			self.win_chatbox.resize(h-3, w)
+		except:
+			pass
+
+		try:
+			self.win_inputbox.mvwin(h-3, 0)
+			self.win_inputbox.resize(3, w)
+		except:
+			pass
 
 		self.render()
 
