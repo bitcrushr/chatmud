@@ -1,14 +1,8 @@
 This is a CLI chat client for the game hackmud based around the ability to chat via JSON.
 
-How to use:
 ```
-  /user <user> -> switch to user, invalid user will crash
-  /channel <channel> -> switch channel, invalid channel will make the program very confused
-  /baud <int> -> client will poll for changes every <int> seconds - deafult is 3
-  /quit -> quit the program
-  {coming soon} /help -> display this
+/help  will bring a helplist up
 ```
-
 THIS PROJECT REQUIRES THE 'requests' AND 'pathlib'  LIBRARIES.
 To install these libraries, run:
 ```
