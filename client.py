@@ -103,12 +103,12 @@ def main(stdscr):
 	Threader().start()
 	###
 	
-	debug_file = open("debug.kek", "w+")
 
 	while running:
 		uin = Gui.wait_input()
 		if uin == "/quit":
 			running = False
+			Gui.kill()
 		elif "/user" in uin:
 			if uin[6:] in usernames:
 				username = uin[6:]
@@ -143,6 +143,7 @@ def main(stdscr):
 			Gui.inject_chat("/user <user>          : Switch to user")
 			Gui.inject_chat("/channel <channel>    : Switch to channel")
 			Gui.inject_chat("/baud <int>           : Set polling rate to <int>, default is 3")
+			Gui.inject_chat("/who                  : List users in current channel (BUGGY)")
 			Gui.inject_chat("/quit                 : Exit")
 			Gui.inject_chat("")
 		elif "/debug" in uin:

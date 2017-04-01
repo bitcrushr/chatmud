@@ -131,3 +131,8 @@ class Graphics():
 			elif 32 <= last <= 126:
 				self.inputbuffer += chr(last)
 				self.render_inputbox()
+	def kill(self):
+		curses.echo()
+		curses.nocbreak()
+		self.stdscr.keypad(0)
+		curses.endwin()
