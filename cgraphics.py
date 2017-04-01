@@ -39,7 +39,7 @@ class Graphics():
 		self.win_chatbox.resize(h-3, w)
 		
 		self.win_inputbox.mvwin(h-3, 0)
-		self.win_inputbox.resize(2, w)
+		self.win_inputbox.resize(3, w)
 
 		self.render()
 
