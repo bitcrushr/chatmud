@@ -9,12 +9,12 @@ How to use:
   {coming soon} /help -> display this
 ```
 
-THIS PROJECT REQUIRES THE 'requests' LIBRARY
+THIS PROJECT REQUIRES THE 'requests' AND 'pathlib'  LIBRARIES
 To install this library, run:
-```
-  pip3 install requests
-```
 ```
   pip install requests
 ```
-depending on your installation of pip.
+and
+```
+  pip install pathlib
+```
