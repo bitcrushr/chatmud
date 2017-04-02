@@ -59,17 +59,19 @@ class Graphics():
 			for i in buff:
 				if 'channel' in i:
 					if i['channel'] == self.channel:
-						self.linebuffer.append( "{} // {} :".format(i['t'], i['from_user']) )
-						thinglist = i['msg'].splitlines()
-						for i in thinglist:
-							if i:
-								self.linebuffer.append( scrape( i ) )
-							if len(i) > curses.COLS:
-								iterator = int(len(i) / curses.COLS)
-								while iterator > 0:
-									self.linebuffer.append( "" )
-									iterator -= 1
-						self.linebuffer.append( "" )
+						putting =  "{} // {} :".format(i['t'], i['from_user']) 
+						if not(putting in self.linebuffer):
+							self.linebuffer.append(putting)
+							thinglist = i['msg'].splitlines()
+							for i in thinglist:
+								if i:
+									self.linebuffer.append( scrape( i ) )
+								if len(i) > curses.COLS:
+									iterator = int(len(i) / curses.COLS)
+									while iterator > 0:
+										self.linebuffer.append( "" )
+										iterator -= 1
+							self.linebuffer.append( "" )
 		
 		self.render_chatbox()
 
