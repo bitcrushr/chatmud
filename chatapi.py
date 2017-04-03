@@ -67,7 +67,7 @@ class API:
             except:
                 pass
             try:
-                resp = reversed( self.chatbuffer )
+                resp = self.chatbuffer 
             except:
                 resp = {}
             return resp
