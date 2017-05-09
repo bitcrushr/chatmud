@@ -18,7 +18,7 @@ def main(stdscr):
 	token_file = Path(os.path.join(os.path.dirname(__file__),"token.dat"))
 	if token_file.is_file():
 		saved = True
-		token_file = open(token_file)
+		token_file = open(os.path.join(os.path.dirname(__file__),"token.dat"))
 		resp = token_file.read()
 		Api = chatapi.API(resp)
 		try:
