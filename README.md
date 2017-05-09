@@ -1,7 +1,7 @@
 This is a CLI chat client for the game hackmud based around the ability to chat via JSON.
 
 ```
-/help  will bring a helplist up
+/help -> Displays available commands
 ```
 THIS PROJECT REQUIRES THE 'requests' AND 'pathlib'  LIBRARIES.
 To install these libraries, run:
