@@ -15,10 +15,10 @@ def main(stdscr):
 	
 	Gui = cgraphics.Graphics(stdscr)
 	Gui.inject_chat("Initializing...")
-	token_file = Path(os.path.join(os.path.dirname(__file__),"token.dat"))
+	token_file = Path(os.path.join(sys.path[0], "token.dat"))
 	if token_file.is_file():
 		saved = True
-		token_file = open(os.path.join(os.path.dirname(__file__),"token.dat"))
+		token_file = open(token_file)
 		resp = token_file.read()
 		Api = chatapi.API(resp)
 		try:
