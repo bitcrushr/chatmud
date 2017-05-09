@@ -15,7 +15,7 @@ def main(stdscr):
 	
 	Gui = cgraphics.Graphics(stdscr)
 	Gui.inject_chat("Initializing...")
-	token_file = Path("./token.dat")
+	token_file = os.path.join(os.path.dirname(__file__),"token.dat")
 	if token_file.is_file():
 		saved = True
 		token_file = open('token.dat')
